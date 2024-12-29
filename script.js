@@ -91,8 +91,59 @@ function renderPiece(){
 }
 
 function moveDown() {
-    pieceOBj.y+=1;
+    if(!collision(pieceOBj.x,pieceOBj.y+1))
+        pieceOBj.y+=1;
+    else{
+        for(let i =0;i<pieceOBj.piece.length;i++) {
+            for(let j=0;j<pieceOBj.piece[i].length;j++) {
+                if(pieceOBj.piece[i][j] == 1) {
+                    let p = pieceOBj.x+j;
+                    let q = pieceOBj.y+i;
+
+                    grid[q][p] = pieceOBj.colorIndex;
+                }
+            }
+        }
+        if(pieceOBj.y == 0) {
+            alert("Game Over!!!");
+            grid = generateGrid();
+        }
+        pieceOBj = null;
+    }
     renderGrid();
+}
+
+function moveLeft() {
+    if(!collision(pieceOBj.x-1,pieceOBj.y))
+        pieceOBj.x-=1;
+    
+    renderGrid();
+}
+
+function moveRight() {
+    if(!collision(pieceOBj.x+1,pieceOBj.y))
+        pieceOBj.x+=1;
+    renderGrid();
+}
+
+function collision(x,y) {
+    let piece = pieceOBj.piece;
+    for(let i=0;i<piece.length;i++) {
+        for(let j=0;j<piece[i].length;j++) {
+            if(piece[i][j] == 1) {
+                let p = x+j;
+                let q = y+i;
+                if(p>=0 && p<COLS && q>=0 && q<ROWS) {
+                    if(grid[q][p]>0) {
+                        return true;
+                    }
+                }else {
+                    return true;
+                } 
+            }
+        }
+    }
+    return false;
 }
 
 function generateGrid() {
@@ -115,3 +166,16 @@ function renderGrid() {
     }
     renderPiece();
 }
+
+document.addEventListener("keydown", function(e) {
+    let key = e.code;
+    if(key== "ArrowDown") {
+        moveDown();
+    }else if(key=="ArrowLeft") {
+        moveLeft();
+    } else if(key=="ArrowRight") {
+        moveRight();
+    } else if(key=="ArrowUp") {
+        rotate();
+    }
+})

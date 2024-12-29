@@ -10,7 +10,7 @@ body {
     justify-content: space-evenly;
     align-items: center;
     flex-direction: column;
-    height: 95vh;
+    height: 100vh;
 }
 
 #tetris {

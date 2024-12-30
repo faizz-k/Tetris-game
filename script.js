@@ -222,4 +222,52 @@ document.addEventListener("keydown", function(e) {
     } else if(key=="ArrowUp") {
         rotate();
     }
-})
+});
+
+// Detect touch start
+document.addEventListener("touchstart", function (e) {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+});
+
+// Detect touch end and calculate swipe direction
+document.addEventListener("touchend", function (e) {
+  const endX = e.changedTouches[0].clientX;
+  const endY = e.changedTouches[0].clientY;
+  const diffX = endX - startX;
+  const diffY = endY - startY;
+
+  // Determine swipe direction based on the difference
+  if (Math.abs(diffX) > Math.abs(diffY)) {
+    // Horizontal swipe
+    if (diffX > 30) {
+      moveRight(); // Swipe right
+    } else if (diffX < -30) {
+      moveLeft(); // Swipe left
+    }
+  } else {
+    // Vertical swipe
+    if (diffY > 30) {
+      moveDown(); // Swipe down
+    } else if (diffY < -30) {
+      rotate(); // Swipe up
+    }
+  }
+});
+
+// Example action functions
+function moveDown() {
+  console.log("Move Down");
+}
+
+function moveLeft() {
+  console.log("Move Left");
+}
+
+function moveRight() {
+  console.log("Move Right");
+}
+
+function rotate() {
+  console.log("Rotate");
+}

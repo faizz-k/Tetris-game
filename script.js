@@ -71,28 +71,11 @@ function generateRandomPiece() {
 setInterval(newGameState,500);
 
 function newGameState(){
-    checkGrid();
     if(pieceOBj == null) {
-        
         pieceOBj = generateRandomPiece();
         renderPiece();
     }
     moveDown();
-}
-
-function checkGrid() {
-    for(let i =0;i<grid.length;i++) {
-        let allFilled = true;
-        for(let j =0;j<grid[i].length;j++) {
-            if(grid[i][j] == 0) {
-                allFilled = false
-            }
-        }
-        if(allFilled) {
-            grid.splice(i,1);
-            grid.unshift([0,0,0,0,0,0,0,0,0,0]);
-        }
-    }
 }
 
 function renderPiece(){
@@ -143,35 +126,8 @@ function moveRight() {
     renderGrid();
 }
 
-function rotate() {
-    let rotatedPiece = [];
+function collision(x,y) {
     let piece = pieceOBj.piece;
-
-    for(let i = 0;i<piece.length;i++) {
-        rotatedPiece.push([]);
-        for(let j =0;j<piece[i].length;j++) {
-            rotatedPiece[i].push(0);
-        }
-    }
-
-    for(let i =0;i<piece.length;i++) {
-        for(j =0;j<piece[i].length;j++) {
-            rotatedPiece[i][j] = piece[j][i];
-        }
-    }
-
-    for(let i=0;i<rotatedPiece.length;i++) {
-        rotatedPiece[i] = rotatedPiece[i].reverse();
-    }
-
-    if(!collision(pieceOBj.x,pieceOBj.y,rotatedPiece)) {
-        pieceOBj.piece = rotatedPiece;
-    }
-    renderGrid();
-}
-
-function collision(x,y,rotatedPiece) {
-    let piece = rotatedPiece || pieceOBj.piece;
     for(let i=0;i<piece.length;i++) {
         for(let j=0;j<piece[i].length;j++) {
             if(piece[i][j] == 1) {
